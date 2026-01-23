@@ -56,7 +56,7 @@ pipeline {
         stage('Push docker image to docker hub')
         {
             steps {
-                withDockerRegistry('docker-cred-system') {
+                withDockerRegistry(credentialsId: 'docker-cred', url: 'https://hub.docker.com/repositories/rakshithrpoojary') {
                     sh ''' docker tag starbucks  ${DOCKERUSERNAME}/starbucks:${BUILD_NUMBER}
                      docker push ${DOCKERUSERNAME}/starbucks:${BUILD_NUMBER}
                      docker run -d --name starbucks-${BUILD_NUMBER} -p 3000:3000 ${DOCKERUSERNAME}/starbucks:${BUILD_NUMBER}
