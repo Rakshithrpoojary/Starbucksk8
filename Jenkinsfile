@@ -61,7 +61,6 @@ pipeline {
                 withDockerRegistry(credentialsId: 'docker-cred', url:'https://index.docker.io/v1/') {
                     sh ''' docker tag starbucks  ${DOCKERUSERNAME}/starbucks:${BUILD_NUMBER}
                      docker push ${DOCKERUSERNAME}/starbucks:${BUILD_NUMBER}
-                     docker run -d --name starbucks-${BUILD_NUMBER} -p 3000:3000 ${DOCKERUSERNAME}/starbucks:${BUILD_NUMBER}
                     '''
                 }
             }
