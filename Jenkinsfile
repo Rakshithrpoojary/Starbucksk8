@@ -80,7 +80,7 @@ pipeline {
                     sh """
           git config user.name "Rakshith"
           git config user.email "poojaryrakshith986@gmail.com"
-          git add Kubernetes-Manifests-file/Frontend/deployment.yaml
+          git add k8/manifest.yaml
           git commit -m "Update frontend image to $IMAGE_TAG [ci skip]"
           git push origin HEAD --push-option=ci.skip
         """
