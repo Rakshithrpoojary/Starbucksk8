@@ -3,7 +3,7 @@ pipeline {
     tools {
         nodejs 'node17'
     }
-    environments {
+    environment {
         SCANNER_HOME = tool 'sonar-scanner'
         DOCKERUSERNAME = 'rakshithrpoojary'
     }
@@ -16,13 +16,13 @@ pipeline {
         }
         stage('Checkout git')
         {
-            step {
+            steps {
                 git branch: 'main', url: 'https://github.com/Rakshithrpoojary/Starbucksk8.git'
             }
         }
         stage('Sonar analysis')
         {
-            step {
+            steps {
                 withSonarQubeEnv(credentialsId: 'sonar-cred') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=starbucks \
                     -Dsonar.projectKey=starbucks -Dsonar.exclusions=Imps/**,scripts/**,scriptsnew/**'''
@@ -31,31 +31,31 @@ pipeline {
         }
         stage('Quality gate')
         {
-            step {
+            steps {
                 waitForQualityGate(abortPipeline: false, credentialsId: 'sonar-cred')
             }
         }
         stage('Install packages')
         {
-            step {
+            steps {
                 sh 'npm install'
             }
         }
         stage('Trivy scanner')
         {
-            step {
+            steps {
                 'trivy fs . > trivy.txt'
             }
         }
         stage('prepare docker image')
         {
-            step {
+            steps {
                 sh'docker build -t starbucks .'
             }
         }
         stage('Push docker image to docker hub')
         {
-            step {
+            steps {
                 withDockerRegistry(credentialsId: 'docker-cred-system') {
                     sh ''' docker tag starbucks  ${DOCKERUSERNAME}/starbucks:${BUILD_NUMBER}
                      docker push ${DOCKERUSERNAME}/starbucks:${BUILD_NUMBER}
