@@ -44,7 +44,7 @@ pipeline {
         stage('Trivy scanner')
         {
             steps {
-                'trivy fs . > trivy.txt'
+                sh 'trivy fs . > trivy.txt'
             }
         }
         stage('prepare docker image')
