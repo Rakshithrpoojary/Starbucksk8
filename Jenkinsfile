@@ -23,7 +23,7 @@ pipeline {
         stage('Sonar analysis')
         {
             steps {
-                withSonarQubeEnv(credentialsId: 'sonar-cred') {
+                withSonarQubeEnv(credentialsId: 'sonarqube') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=starbucks \
                     -Dsonar.projectKey=starbucks -Dsonar.exclusions=Imps/**,scripts/**,scriptsnew/**'''
                 }
